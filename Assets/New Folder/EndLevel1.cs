@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 public class EndLevel : MonoBehaviour
 {
     // The name of the next scene to load
-    public string nextSceneName;
+    public string nextSceneNam;
     // Add this code to your player script
     public DisplayMessage displayMessage;
 
@@ -16,16 +16,16 @@ public class EndLevel : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             // display win message
-            displayMessage.ShowMessage(showMessage);
+            //displayMessage.ShowMessage(showMessage);
             // Delay for visual effect (optional)
             //Invoke("LoadNextLevel", 2f);
-            SceneManager.LoadScene("Scene2");
+            SceneManager.LoadScene(nextSceneNam);
         }
     }
 
     // Function to load the next scene
     private void LoadNextLevel()
     {
-        SceneManager.LoadScene(nextSceneName);
+        SceneManager.LoadScene(nextSceneNam);
     }
 }

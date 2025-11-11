@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 //Stoped at doublejump titlecard 
 public class Movement : MonoBehaviour
 {
     public Rigidbody2D rb;
-    public bool isFacingright;
+    public bool isFacingright=true;
     [Header("movement")]
     public float MoveSpeed=5f;
    float horizontalMovemont;
@@ -31,12 +33,27 @@ public class Movement : MonoBehaviour
     public float wallslidespeed = 2f;
    public bool iswallsilide;
 
+    //wall jump
+    bool iswalljump;
+    float wallJumpDirection;
+    float wallJumpTime=0.5f;
+     float wallJumptimer;
+    public Vector2 wallJumpPOWER = new Vector2(5f,10f);
+
+    [Header("dash")]
+    public float dashspeed=20f;
+    public float dashDuraton = 0.9f;
+    public float dashcool = 0.2f;
+    bool isdashing;
+    bool candash=true;
+
 
     //fall
     public DisplayMessage displayMessage;
     private bool isFalling = false;
     private float fallStartTime = 0.5f;
     private float fallThreshold = 2.0f;
+         public string loadSceneName;
     public bool deathState = false;
     public string showMessage;
     // Start is called before the first frame update
@@ -48,20 +65,49 @@ public class Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        rb.velocity = new Vector2(horizontalMovemont * MoveSpeed, rb.velocity.y);
+        if (isdashing) { return; }
+
         groundcheck();
-        flip();
+      
         fall();
         Wallslide();
-
-
+        processwalljump();
+       
+        if (!iswalljump)
+        {
+            rb.linearVelocity = new Vector2(horizontalMovemont * MoveSpeed, rb.linearVelocity.y);
+            flip();
+        }
     }
     public void move(InputAction.CallbackContext context)
     {
         horizontalMovemont = context.ReadValue<Vector2>().x;
 
     }
+    public void dash(InputAction.CallbackContext context)
+    {
+       if (context.performed && candash)
+        {
+            StartCoroutine(DashCoroutine());
 
+        }
+
+    }
+    private IEnumerator DashCoroutine()
+    {
+        Physics2D.IgnoreLayerCollision(7, 8, true);
+        candash = false;
+        isdashing = true;
+        float dashDirection = isFacingright ? 1f : -1f;
+        rb.linearVelocity = new Vector2(dashDirection* dashspeed,rb.linearVelocity.y);//dash move
+        yield return new WaitForSeconds(dashDuraton);
+        rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+        isdashing=false;
+        Physics2D.IgnoreLayerCollision(7, 8, false);
+        yield return new WaitForSeconds(dashcool);
+
+        candash = true;
+    }
     public void Jump(InputAction.CallbackContext context)
     {
         if (Jumpsremaning>0)
@@ -70,14 +116,33 @@ public class Movement : MonoBehaviour
 
             if (context.performed)
             {
-                rb.velocity = new Vector2(rb.velocity.x, JumpPower);
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, JumpPower);
                 Jumpsremaning--;
             }
             else if (context.canceled)
             {
-                rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * 0.5f);
                 Jumpsremaning--;
             }
+        }
+        //wall
+        if (context.performed && wallJumptimer > 0f)
+        {
+            iswalljump=true;
+            rb.linearVelocity= new Vector2(wallJumpDirection*wallJumpPOWER.x,wallJumpPOWER.y);//jumpaway
+            wallJumptimer=0f;
+            //flip
+            if (transform.localScale.x != wallJumpDirection)
+            {
+                isFacingright = !isFacingright;
+                Vector3 ls = transform.localScale;
+                ls.x *= -1f;
+                transform.localScale = ls;
+            }
+
+
+
+            Invoke(nameof(Cancelwalljump), wallJumpTime + 0.1f);//walljump = 0.5 jump
         }
     }
     
@@ -85,11 +150,26 @@ public class Movement : MonoBehaviour
         {   if(!isgrounded & Wallcheck() & horizontalMovemont!=0)
         {
             iswallsilide = true;
-            rb.velocity = new Vector2(rb.velocity.x, Mathf.Max(rb.velocity.y, -wallslidespeed));
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, Mathf.Max(rb.linearVelocity.y, -wallslidespeed));
         }
         else { iswallsilide=false; }    
 
         }
+    private void processwalljump()
+    { if (iswallsilide)
+        {
+            iswalljump = false;
+            wallJumpDirection = -transform.localScale.x;
+            wallJumptimer = wallJumpTime;
+
+            CancelInvoke(nameof(Cancelwalljump));
+        }
+       else if (wallJumptimer > 0f) { wallJumptimer-=Time.deltaTime; }
+    }
+    private void Cancelwalljump()
+    { iswalljump = false;
+        
+    }
 
 
 
@@ -121,9 +201,10 @@ public class Movement : MonoBehaviour
         if (deathState == true)
         {
             // display win message
-            displayMessage.ShowMessage(showMessage);
+            //displayMessage.ShowMessage(showMessage);
             // Delay for visual effect (optional)
-            Invoke("LoadLevel", 2f);
+            //Invoke("LoadLevel", 2f);
+            SceneManager.LoadScene("Death");
         }
     }
 
@@ -170,6 +251,6 @@ public class Movement : MonoBehaviour
     {
         // You can implement your own logic here to determine if the player is falling.
         // For example, you can check if the player's vertical velocity is negative.
-        return GetComponent<Rigidbody2D>().velocity.y < 0;
+        return GetComponent<Rigidbody2D>().linearVelocity.y < 0;
     }
 }
