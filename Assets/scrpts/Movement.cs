@@ -32,7 +32,7 @@ public class Movement : MonoBehaviour
     [Header("Wallmove")]
     public float wallslidespeed = 2f;
    public bool iswallsilide;
-
+    [Header("Walljump")]
     //wall jump
     bool iswalljump;
     float wallJumpDirection;
@@ -46,8 +46,7 @@ public class Movement : MonoBehaviour
     public float dashcool = 0.2f;
     bool isdashing;
     bool candash=true;
-
-
+    [Header("fall")]
     //fall
     public DisplayMessage displayMessage;
     private bool isFalling = false;
@@ -56,11 +55,7 @@ public class Movement : MonoBehaviour
          public string loadSceneName;
     public bool deathState = false;
     public string showMessage;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+ 
 
     // Update is called once per frame
     void Update()
@@ -79,6 +74,7 @@ public class Movement : MonoBehaviour
             flip();
         }
     }
+
     public void move(InputAction.CallbackContext context)
     {
         horizontalMovemont = context.ReadValue<Vector2>().x;
@@ -159,9 +155,10 @@ public class Movement : MonoBehaviour
     { if (iswallsilide)
         {
             iswalljump = false;
+            
             wallJumpDirection = -transform.localScale.x;
             wallJumptimer = wallJumpTime;
-
+            Jumpsremaning = maxJumps;
             CancelInvoke(nameof(Cancelwalljump));
         }
        else if (wallJumptimer > 0f) { wallJumptimer-=Time.deltaTime; }
