@@ -231,7 +231,7 @@ public class Movement : MonoBehaviour
       return Physics2D.OverlapBox(Wallcheckpos.position, Wallchecksize, 0, Walllayer);
     }
     private void flip()
-    {
+    { //swapgreaterthan
      if(isFacingright&& horizontalMovemont<0||!isFacingright && horizontalMovemont >0)
         {
             isFacingright = !isFacingright;
