@@ -635,13 +635,13 @@ MonoBehaviour:
   JumpPower: 10
   maxJumps: 2
   Groundcheckpos: {fileID: 1929014256}
-  Groundchecksize: {x: 1, y: 1}
+  Groundchecksize: {x: 1, y: 0.5}
   Groundlayer:
     serializedVersion: 2
     m_Bits: 8
   isgrounded: 0
   Wallcheckpos: {fileID: 1929652056}
-  Wallchecksize: {x: 1.5, y: 2.5}
+  Wallchecksize: {x: 1.2, y: 2.5}
   Walllayer:
     serializedVersion: 2
     m_Bits: 64
@@ -11776,7 +11776,7 @@ Transform:
   m_GameObject: {fileID: 1929014255}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.345, y: -1.49, z: 0}
+  m_LocalPosition: {x: -0.145, y: -1.49, z: 0}
   m_LocalScale: {x: 6.09, y: 6.5464, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
