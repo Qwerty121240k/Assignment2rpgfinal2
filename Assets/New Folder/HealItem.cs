@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class HealItem : MonoBehaviour
+public class Healitem : MonoBehaviour
 {
     [SerializeField] private int healAmount = 25; // how much to heal
 

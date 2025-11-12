@@ -303,7 +303,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 53644c7a5d382e84f867c0d0f22990c6, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HealItem
+  m_EditorClassIdentifier: Assembly-CSharp::trap
   healAmount: 25
 --- !u!1 &357913787
 GameObject:
@@ -502,18 +502,21 @@ MonoBehaviour:
   Groundlayer:
     serializedVersion: 2
     m_Bits: 8
+  isgrounded: 0
   Wallcheckpos: {fileID: 1929652056}
   Wallchecksize: {x: 0.5, y: 0.05}
   Walllayer:
     serializedVersion: 2
     m_Bits: 64
-  wallslidespeed: 0.4
+  wallslidespeed: 0.04
   iswallsilide: 0
-  wallJumpPOWER: {x: 5, y: 10}
+  wallJumpPOWER: {x: 10, y: 10}
   dashspeed: 15
   dashDuraton: 0.25
   dashcool: 0.2
   displayMessage: {fileID: 0}
+  fallStartTime: 1
+  fallThreshold: 5
   loadSceneName: Death
   deathState: 0
   showMessage: 'You died '
@@ -1374,9 +1377,9 @@ GameObject:
   m_Component:
   - component: {fileID: 813155597}
   - component: {fileID: 813155601}
-  - component: {fileID: 813155600}
   - component: {fileID: 813155599}
   - component: {fileID: 813155598}
+  - component: {fileID: 813155602}
   m_Layer: 0
   m_Name: deathsaw
   m_TagString: Untagged
@@ -1471,19 +1474,6 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
---- !u!114 &813155600
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 813155596}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53644c7a5d382e84f867c0d0f22990c6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healAmount: -2500
 --- !u!212 &813155601
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1542,6 +1532,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &813155602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 813155596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8898f1a67c3958b40825e0a16bdffbb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::trap
+  healAmount: -25000
 --- !u!1 &831911363
 GameObject:
   m_ObjectHideFlags: 0
@@ -1902,9 +1905,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1442488209}
   - component: {fileID: 1442488208}
-  - component: {fileID: 1442488207}
   - component: {fileID: 1442488206}
   - component: {fileID: 1442488205}
+  - component: {fileID: 1442488210}
   m_Layer: 0
   m_Name: saw
   m_TagString: Untagged
@@ -1984,19 +1987,6 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
---- !u!114 &1442488207
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1442488204}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53644c7a5d382e84f867c0d0f22990c6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healAmount: -25
 --- !u!212 &1442488208
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2070,6 +2060,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 123000316}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1442488210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1442488204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8898f1a67c3958b40825e0a16bdffbb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::trap
+  healAmount: -25
 --- !u!1 &1503631304
 GameObject:
   m_ObjectHideFlags: 0
@@ -2370,7 +2373,7 @@ Transform:
   m_GameObject: {fileID: 1929652055}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.633, y: 0.289, z: 0}
+  m_LocalPosition: {x: -0.58, y: 0.289, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2382,7 +2385,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 808932239}
   - {fileID: 1611247678}
+  - {fileID: 668988855}
   - {fileID: 465288217}
   - {fileID: 1363489584}
   - {fileID: 123000316}
-  - {fileID: 668988855}

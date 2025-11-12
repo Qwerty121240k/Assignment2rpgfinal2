@@ -23,10 +23,12 @@ public class Movement : MonoBehaviour
     public Transform Groundcheckpos;
     public Vector2 Groundchecksize = new Vector2(0.5f, 0.05f);
     public LayerMask Groundlayer;
-    bool isgrounded;
+    public bool isgrounded;
+
+
     [Header("Wallcheck")]
     public Transform Wallcheckpos;
-    public Vector2 Wallchecksize = new Vector2(0.5f, 0.05f);
+    public Vector2 Wallchecksize = new Vector2(0.05f, 0.5f);
     public LayerMask Walllayer;
     
     [Header("Wallmove")]
@@ -50,8 +52,8 @@ public class Movement : MonoBehaviour
     //fall
     public DisplayMessage displayMessage;
     private bool isFalling = false;
-    private float fallStartTime = 0.5f;
-    private float fallThreshold = 2.0f;
+    public float fallStartTime = 0.5f;
+    public float fallThreshold = 2.0f;
          public string loadSceneName;
     public bool deathState = false;
     public string showMessage;
@@ -135,7 +137,7 @@ public class Movement : MonoBehaviour
                 ls.x *= -1f;
                 transform.localScale = ls;
             }
-
+             
 
 
             Invoke(nameof(Cancelwalljump), wallJumpTime + 0.1f);//walljump = 0.5 jump
@@ -145,7 +147,8 @@ public class Movement : MonoBehaviour
         private void Wallslide() 
         {   if(!isgrounded & Wallcheck() & horizontalMovemont!=0)
         {
-            iswallsilide = true;
+            iswallsilide = true ;
+            Jumpsremaning = maxJumps; //addjump
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, Mathf.Max(rb.linearVelocity.y, -wallslidespeed));
         }
         else { iswallsilide=false; }    
@@ -158,7 +161,7 @@ public class Movement : MonoBehaviour
             
             wallJumpDirection = -transform.localScale.x;
             wallJumptimer = wallJumpTime;
-            Jumpsremaning = maxJumps;
+            Jumpsremaning = maxJumps; //addjump
             CancelInvoke(nameof(Cancelwalljump));
         }
        else if (wallJumptimer > 0f) { wallJumptimer-=Time.deltaTime; }
@@ -172,10 +175,9 @@ public class Movement : MonoBehaviour
 
     private void fall()
     {
-
-        // Add this code to your update() script
-        // Check if the player is falling
-        if (IsFalling())
+        //addwallslide
+      
+        if (IsFalling ())
         {
             // The player is falling, start timing the fall.
             if (!isFalling)
@@ -185,12 +187,14 @@ public class Movement : MonoBehaviour
             }
             // Check if the fall duration has exceeded the threshold
             if (Time.time - fallStartTime >= fallThreshold)
-            {
-                deathState = true;
-            }
+            { //if (iswallsilide = false)
+                
+                    deathState = true;
+                
+             }
         }
         else
-        {
+        {  
             // The player is not falling, reset the fall timer.
             isFalling = false;
         }
