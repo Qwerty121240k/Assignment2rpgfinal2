@@ -5700,7 +5700,7 @@ GameObject:
   - component: {fileID: 780228947}
   - component: {fileID: 780228946}
   m_Layer: 8
-  m_Name: Hexagon Flat Top
+  m_Name: barrer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
