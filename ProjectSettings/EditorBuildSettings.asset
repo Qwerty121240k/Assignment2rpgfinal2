@@ -29,7 +29,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/scene5.unity
     guid: b224c625d6991aa4b848d6e7341a6e26
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/youwin.unity
     guid: fce2423f167d3d24dbfe0dd17606fccb
   m_configObjects:
