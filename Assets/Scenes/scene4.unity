@@ -603,7 +603,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c37152bfb76e4141a0897dba1d628ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextSceneNam: scene2
+  nextSceneNam: scene5
   displayMessage: {fileID: 0}
   showMessage: next
 --- !u!212 &357913789
